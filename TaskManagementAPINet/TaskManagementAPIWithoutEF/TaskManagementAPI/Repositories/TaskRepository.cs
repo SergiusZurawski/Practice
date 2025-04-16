@@ -31,6 +31,7 @@ namespace TaskManagementAPI.Repositories
         {
             using var connection = CreateConnection();
             var sql = "SELECT * FROM tasks WHERE id = @Id";
+            Console.WriteLine(connection.ConnectionString);
             return await connection.QueryFirstOrDefaultAsync<TaskItem>(sql, new { Id = id });
         }
 
