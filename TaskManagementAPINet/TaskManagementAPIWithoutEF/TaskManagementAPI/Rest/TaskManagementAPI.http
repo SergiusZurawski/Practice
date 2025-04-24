@@ -1,12 +1,63 @@
 @TaskManagementAPI_HostAddress = http://localhost:5037
 
-GET {{TaskManagementAPI_HostAddress}}/weatherforecast/
+### Health check
+GET {{TaskManagementAPI_HostAddress}}/health/
 Accept: application/json
 
 ###
-GET {{TaskManagementAPI_HostAddress}}/api/Tasks/
-Accept: application/json
+
+### Get JWT Token
+POST {{TaskManagementAPI_HostAddress}}/api/v1.0/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin",
+  "password": "password"
+}
+
+> {%
+    client.global.set("token", response.body.token);
+%}
 
 ###
-GET {{TaskManagementAPI_HostAddress}}/api/Tasks/1
+
+### Get all tasks (secured)
+GET {{TaskManagementAPI_HostAddress}}/api/v1.0/Tasks/
 Accept: application/json
+Authorization: Bearer {{token}}
+
+###
+
+### Get task by ID (secured)
+GET {{TaskManagementAPI_HostAddress}}/api/v1.0/Tasks/2
+Accept: application/json
+Authorization: Bearer {{token}}
+
+###
+
+### Create a new TaskItem (secured)
+POST {{TaskManagementAPI_HostAddress}}/api/v1.0/Tasks/
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "title": "Finish backend API",
+  "description": "Implement all endpoints for task management",
+  "isCompleted": false,
+  "createdAt": "2025-04-24T10:00:00"
+}
+
+###
+
+### Update an existing TaskItem (secured)
+PUT {{TaskManagementAPI_HostAddress}}/api/v1.0/Tasks/2
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "id": 2,
+  "title": "Finish backend API (updatedv2)",
+  "description": "Include logging and error handling in task endpoints",
+  "isCompleted": true,
+  "createdAt": "2025-04-24T10:00:00"
+}

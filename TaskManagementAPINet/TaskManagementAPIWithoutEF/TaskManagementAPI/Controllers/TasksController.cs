@@ -1,10 +1,14 @@
 // Controllers/TasksController.cs
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagementAPI.Models;
 using TaskManagementAPI.Services;
 
 [ApiController]
-[Route("api/[controller]")]
+[ApiVersion("1.0")] // ✅ Declare supported API version
+[Authorize]
+[Route("api/v{version:apiVersion}/[controller]")]
 public class TasksController : ControllerBase
 {
     private readonly ITaskService _taskService;
