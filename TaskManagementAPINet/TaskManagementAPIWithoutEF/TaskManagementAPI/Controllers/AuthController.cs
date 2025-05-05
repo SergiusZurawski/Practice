@@ -1,3 +1,7 @@
+using Dapper;
+using Npgsql;
+using TaskManagementAPI.Models;
+
 namespace TaskManagementAPI.Controllers;
 
 // Controllers/AuthController.cs
@@ -20,10 +24,20 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public IActionResult Login([FromBody] LoginRequest request)
+    public async Task<IActionResult> Login([FromBody] LoginRequest request)
     {
         // Dummy auth (replace with real check)
+        /*
         if (request.Username != "admin" || request.Password != "password")
+            return Unauthorized();
+            
+        */
+        using var connection = new NpgsqlConnection(_config.GetConnectionString("DefaultConnection"));
+        const string sql = "SELECT id, username, passwordHash, role FROM users WHERE username = @Username";
+
+        var user = await connection.QueryFirstOrDefaultAsync<UserDto>(sql, new { request.Username });
+
+        if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash))
             return Unauthorized();
 
         var claims = new[]
@@ -50,9 +64,10 @@ public class AuthController : ControllerBase
         });
     }
 }
-
+/*
 public class LoginRequest
 {
     public string Username { get; set; } = "";
     public string Password { get; set; } = "";
 }
+*/
