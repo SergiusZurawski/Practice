@@ -47,4 +47,16 @@ public class AuthService : IAuthService
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+    
+    public async Task<int> RegisterUserAsync(string username, string password, string role)
+    {
+        var existingUser = await _userRepo.GetByUsernameAsync(username);
+        if (existingUser != null)
+        {
+            throw new Exception("User already exists.");
+        }
+
+        string passwordHash = BCrypt.Net.BCrypt.HashPassword(password);
+        return await _userRepo.RegisterUserAsync(username, passwordHash, role);
+    }
 }

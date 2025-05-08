@@ -23,4 +23,20 @@ public class UserRepository : IUserRepository
 
         return await connection.QueryFirstOrDefaultAsync<UserDto>(sql, new { Username = username });
     }
+    public async Task<int> RegisterUserAsync(string username, string passwordHash, string role)
+    {
+        using var connection = new NpgsqlConnection(_connectionString);
+
+        const string sql = @"
+            INSERT INTO users (username, passwordHash, role) 
+            VALUES (@Username, @PasswordHash, @Role) 
+            RETURNING id;";
+
+        return await connection.ExecuteScalarAsync<int>(sql, new 
+        {
+            Username = username,
+            PasswordHash = passwordHash,
+            Role = role
+        });
+    }
 }

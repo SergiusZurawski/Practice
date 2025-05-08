@@ -5,6 +5,14 @@ GET {{TaskManagementAPI_HostAddress}}/health/
 Accept: application/json
 
 ###
+POST {{TaskManagementAPI_HostAddress}}/api/v1.0/auth/register
+Content-Type: application/json
+
+{
+  "username": "newuser",
+  "password": "password123",
+  "role": "Admin"
+}
 
 ### Get JWT Token
 POST {{TaskManagementAPI_HostAddress}}/api/v1.0/auth/login
