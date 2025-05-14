@@ -44,15 +44,15 @@ secrets.json
 Thumbs.db
 ehthumbs.db
 
-# Node/Vue project in task-managment-ui
-task-managment-ui/node_modules/
-task-managment-ui/dist/
-task-managment-ui/.env
-task-managment-ui/npm-debug.log*
-task-managment-ui/yarn-debug.log*
-task-managment-ui/yarn-error.log*
-task-managment-ui/.nuxt/
-task-managment-ui/.output/
-task-managment-ui/.cache/
-task-managment-ui/.vite/
-task-managment-ui/.DS_Store
+# Node/Vue project in task-management-ui
+task-management-ui/node_modules/
+task-management-ui/dist/
+task-management-ui/.env
+task-management-ui/npm-debug.log*
+task-management-ui/yarn-debug.log*
+task-management-ui/yarn-error.log*
+task-management-ui/.nuxt/
+task-management-ui/.output/
+task-management-ui/.cache/
+task-management-ui/.vite/
+task-management-ui/.DS_Store
