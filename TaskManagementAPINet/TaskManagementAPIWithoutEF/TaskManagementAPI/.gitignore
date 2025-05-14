@@ -1,0 +1,58 @@
+# .NET build artifacts
+bin/
+obj/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Visual Studio Code settings
+.vscode/
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# NuGet packages
+*.nupkg
+*.snupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# DotCover
+*.dotCover
+
+# Rider
+.idea/
+
+# Logs
+*.log
+
+# Publish output
+publish/
+out/
+
+# User secrets
+secrets.json
+
+# Resharper
+*.ReSharper
+*.DotSettings.user
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Node/Vue project in task-managment-ui
+task-managment-ui/node_modules/
+task-managment-ui/dist/
+task-managment-ui/.env
+task-managment-ui/npm-debug.log*
+task-managment-ui/yarn-debug.log*
+task-managment-ui/yarn-error.log*
+task-managment-ui/.nuxt/
+task-managment-ui/.output/
+task-managment-ui/.cache/
+task-managment-ui/.vite/
+task-managment-ui/.DS_Store
