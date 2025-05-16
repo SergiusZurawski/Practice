@@ -15,21 +15,31 @@
 </template>
 
 <script>
+
+import { useStore } from 'vuex'; // Import useStore
+
 export default {
   name: 'Tasks',
-  data() {
-    return {
-      tasks: []
-    };
-  },
   mounted() {
     this.fetchTasks();
+  },
+  setup() {
+    const store = useStore(); // Get the store instance
+    return {
+      store
+    };
+  },
+  computed: {
+    tasks() {
+      return this.store.state.tasks; // Assuming tasks are stored in Vuex
+    }
   },
   methods: {
     async fetchTasks() {
       try {
-        const response = await fetch('http://localhost:5037/api/v1/tasks');
-        this.tasks = await response.json();
+        await this.store.dispatch('fetchTasks'); // Use this.store
+        console.log('Inside fetchTasks method from Tasks.vue');
+        console.log('Tasks fetched (from computed property):', this.tasks);
       } catch (error) {
         console.error('Error fetching tasks:', error);
       }

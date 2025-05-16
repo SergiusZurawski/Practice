@@ -19,6 +19,8 @@
 <script>
 import axios from 'axios';
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex'; // Import useStore
 
 export default {
   name: 'LoginForm',
@@ -26,17 +28,18 @@ export default {
     const username = ref('');
     const password = ref('');
     const errorMessage = ref('');
+    const router = useRouter();
+    const store = useStore(); // Get the store instance
 
     const handleLogin = async () => {
       try {
-        const response = await axios.post('/api/v1/auth/login', {
+        await store.dispatch('login', {
           username: username.value,
           password: password.value,
         });
-        // Handle successful login (e.g., store token, redirect)
-        console.log('Login successful:', response.data);
+        router.push('/tasks');
       } catch (error) {
-        errorMessage.value = 'Invalid username or password.';
+        errorMessage.value = error.message || 'Invalid username or password.';
       }
     };
 

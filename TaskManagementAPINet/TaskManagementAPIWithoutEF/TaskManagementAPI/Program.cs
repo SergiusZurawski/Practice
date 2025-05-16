@@ -50,17 +50,30 @@ builder.Services.AddAuthentication(options =>
     });
 //END OF JWT
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowVueApp",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4173") // Your Vue app's origin
+                  .AllowAnyHeader()
+                  .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
 
+// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI(); // default is /swagger
 }
-app.UseSwagger();
-app.UseSwaggerUI(); // default is /swagger
 
 app.UseHttpsRedirection();
+
+// Enable CORS middleware - Place it before UseAuthentication, UseAuthorization, and MapControllers
+app.UseCors("AllowVueApp");
 
 app.MapGet("/health", () => Results.Ok("Healthy"));
 
