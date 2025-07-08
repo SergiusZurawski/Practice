@@ -105,6 +105,7 @@ const store = createStore({
       // dispatch('fetchUserProfile'); // Example
       const payload = parseJwt(token);
       if (payload && payload.nameid) {
+        console.log('User ID from token:', payload.nameid);
         commit('setUserId', payload.nameid);
       }
       return true;

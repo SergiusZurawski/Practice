@@ -15,6 +15,8 @@ namespace TaskManagementAPI.Services
 
         public Task<IEnumerable<TaskItem>> GetAllTasksAsync() => _repository.GetAllAsync();
 
+        public Task<IEnumerable<TaskItem>> GetTasksForUserAsync(int userId) => _repository.GetTasksForUserAsync(userId);
+
         public Task<TaskItem?> GetTaskByIdAsync(int id) => _repository.GetByIdAsync(id);
 
         public Task<int> CreateTaskAsync(TaskItem task) => _repository.CreateAsync(task);

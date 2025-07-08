@@ -27,6 +27,13 @@ namespace TaskManagementAPI.Repositories
             return await connection.QueryAsync<TaskItem>(sql);
         }
 
+        public async Task<IEnumerable<TaskItem>> GetTasksForUserAsync(int userId)
+        { 
+            using var connection = CreateConnection();
+            var sql = "SELECT * FROM tasks WHERE userid = @UserId ORDER BY id";
+            return await connection.QueryAsync<TaskItem>(sql, new { UserId = userId });
+        }
+
         public async Task<TaskItem?> GetByIdAsync(int id)
         {
             using var connection = CreateConnection();

@@ -1,5 +1,6 @@
 // Controllers/TasksController.cs
 
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TaskManagementAPI.Models;
@@ -18,10 +19,22 @@ public class TasksController : ControllerBase
         _taskService = taskService;
     }
 
+    // [HttpGet]
+    // public async Task<IActionResult> GetAll()
+    // {
+    //     var tasks = await _taskService.GetAllTasksAsync();
+    //     return Ok(tasks);
+    // }
+
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        var tasks = await _taskService.GetAllTasksAsync();
+        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        if (userIdClaim == null)
+            return Unauthorized();
+
+        int userId = int.Parse(userIdClaim); // parse or convert safely
+        var tasks = await _taskService.GetTasksForUserAsync(userId); // new method
         return Ok(tasks);
     }
 
