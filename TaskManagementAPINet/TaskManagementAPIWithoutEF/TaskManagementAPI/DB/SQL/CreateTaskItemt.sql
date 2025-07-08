@@ -4,9 +4,17 @@ CREATE TABLE tasks (
     description TEXT,
     iscompleted BOOLEAN NOT NULL DEFAULT FALSE,
     createdat TIMESTAMP NOT NULL DEFAULT NOW(),
+    task_duedate DATE, -- New field for the due date
+    task_priority INTEGER, -- New field for priority (e.g., 1 for high, 2 for medium, 3 for low)
     user_id INTEGER,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
+
+ALTER TABLE tasks
+ADD COLUMN task_duedate DATE;
+
+ALTER TABLE tasks
+ADD COLUMN task_priority INTEGER;
 
 
 select * from tasks;

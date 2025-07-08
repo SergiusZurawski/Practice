@@ -8,6 +8,8 @@
       <li v-for="task in tasks" :key="task.id">
         <h2>{{ task.title }}</h2>
         <p>{{ task.description }}</p>
+        <p v-if="task.taskDueDate">Due Date: {{ formatDate(task.taskDueDate) }}</p>
+        <p v-if="task.taskPriority">Priority: {{ formatPriority(task.taskPriority) }}</p>
         <p>Status: {{ task.isCompleted ? 'Completed' : 'Pending' }}</p>
       </li>
     </ul>
@@ -43,6 +45,14 @@ export default {
       } catch (error) {
         console.error('Error fetching tasks:', error);
       }
+    },
+    formatDate(dateString) {
+      const options = { year: 'numeric', month: 'short', day: 'numeric' };
+      return new Date(dateString).toLocaleDateString(undefined, options);
+    },
+    formatPriority(priority) {
+      const map = { 1: 'High', 2: 'Medium', 3: 'Low' };
+      return map[priority] || 'Unknown';
     }
   }
 };

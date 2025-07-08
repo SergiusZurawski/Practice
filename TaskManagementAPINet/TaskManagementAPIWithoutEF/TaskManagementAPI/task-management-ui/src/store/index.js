@@ -1,5 +1,6 @@
 // filepath: d:\WorkSpace\Practice\TaskManagementAPINet\TaskManagementAPIWithoutEF\task-management-ui\src\store\auth.js
 import { createStore } from 'vuex';
+import { parseJwt } from '../utils/jwt'; 
 import axios from 'axios';
 
 const store = createStore({
@@ -36,6 +37,12 @@ const store = createStore({
         localStorage.setItem('token', token); // <-- SAVE TOKEN TO LOCALSTORAGE
         // Set token in Axios default headers for subsequent requests
         axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+        //Alternative
+        //config.headers.Authorization = `Bearer ${token}`;
+        const payload = parseJwt(token);
+        if (payload && payload.nameid) {
+          commit('setUserId', payload.nameid);
+        }
         console.log('Login successful:', token);
       } catch (error) {
         throw new Error('Login failed: ' + (error.response?.data?.error || error.message));
@@ -96,6 +103,10 @@ const store = createStore({
       // e.g., fetch user profile
       // For now, we'll assume if token exists, it's valid.
       // dispatch('fetchUserProfile'); // Example
+      const payload = parseJwt(token);
+      if (payload && payload.nameid) {
+        commit('setUserId', payload.nameid);
+      }
       return true;
     },
     logout({ commit }) {
