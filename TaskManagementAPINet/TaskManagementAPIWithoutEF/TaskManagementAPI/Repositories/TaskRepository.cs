@@ -42,6 +42,7 @@ namespace TaskManagementAPI.Repositories
             return await connection.QueryFirstOrDefaultAsync<TaskItem>(sql, new { Id = id });
         }
 
+        /*
         public async Task<int> CreateAsync(TaskItem task)
         {
             using var connection = CreateConnection();
@@ -50,6 +51,40 @@ namespace TaskManagementAPI.Repositories
                 VALUES (@Title, @Description, @IsCompleted, @CreatedAt)
                 RETURNING id";
             task.CreatedAt = DateTime.UtcNow;
+            return await connection.ExecuteScalarAsync<int>(sql, task);
+        }
+        */
+        
+        public async Task<int> CreateAsync(TaskItem task)
+        {
+            using var connection = CreateConnection();
+
+            var sql = @"
+                INSERT INTO tasks (
+                    title,
+                    description,
+                    createdat,
+                    taskduedate,
+                    taskpriority,
+                    userid,
+                    taskstatusid
+                )
+                VALUES (
+                    @Title,
+                    @Description,
+                    @CreatedAt,
+                    @TaskDueDate,
+                    @TaskPriority,
+                    @UserId,
+                    @TaskStatusId
+                )
+                RETURNING id;
+            ";
+
+            // Ensure CreatedAt has a value
+            if (task.CreatedAt == default)
+                task.CreatedAt = DateTime.UtcNow;
+
             return await connection.ExecuteScalarAsync<int>(sql, task);
         }
 

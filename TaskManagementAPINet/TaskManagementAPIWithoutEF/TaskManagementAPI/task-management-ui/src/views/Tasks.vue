@@ -10,7 +10,7 @@
         <p>{{ task.description }}</p>
         <p v-if="task.taskDueDate">Due Date: {{ formatDate(task.taskDueDate) }}</p>
         <p v-if="task.taskPriority">Priority: {{ formatPriority(task.taskPriority) }}</p>
-        <p>Status: {{ task.isCompleted ? 'Completed' : 'Pending' }}</p>
+        <p>Status: {{ formatStatus(task.taskStatusId) }}</p>
       </li>
     </ul>
   </div>
@@ -53,6 +53,20 @@ export default {
     formatPriority(priority) {
       const map = { 1: 'High', 2: 'Medium', 3: 'Low' };
       return map[priority] || 'Unknown';
+    },
+    formatStatus(statusId) {
+      const statusMap = {
+        1: 'Open',
+        2: 'In Progress',
+        3: 'Pending',
+        4: 'Paused',
+        5: 'Blocked',
+        6: 'Completed',
+        7: 'Deleted',
+        8: 'No Longer Needed',
+        9: 'Archived'
+      }
+      return statusMap[statusId] || 'Unknown';
     }
   }
 };

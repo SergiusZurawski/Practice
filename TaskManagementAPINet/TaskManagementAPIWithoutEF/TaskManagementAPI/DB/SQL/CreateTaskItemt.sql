@@ -10,6 +10,19 @@ CREATE TABLE tasks (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+CREATE TABLE tasks (
+    id SERIAL PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT,
+    created_at TIMESTAMP NOT NULL DEFAULT NOW(),
+    task_due_date DATE,
+    task_priority INTEGER,
+    user_id INTEGER,
+    task_status_id INTEGER,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    FOREIGN KEY (task_status_id) REFERENCES task_status(id)
+);
+
 ALTER TABLE tasks
 ADD COLUMN task_duedate DATE;
 
@@ -49,3 +62,30 @@ FOREIGN KEY (user_id)
 REFERENCES users(id);
 
 UPDATE tasks SET user_id = 2 WHERE id=4
+
+-- task_status
+CREATE TABLE task_status (
+    id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL UNIQUE,
+    row_inserted TIMESTAMP NOT NULL DEFAULT NOW(),
+    row_updated TIMESTAMP NOT NULL DEFAULT NOW()
+);
+
+ALTER TABLE tasks
+DROP COLUMN iscompleted,
+ADD COLUMN task_status_id INTEGER,
+ADD CONSTRAINT fk_task_status
+    FOREIGN KEY (task_status_id) REFERENCES task_status(id);
+
+INSERT INTO task_status (name) VALUES
+('open'),
+('in_progress'),
+('pending'),
+('paused'),
+('blocked'),
+('completed'),
+('deleted'),
+('no_longer_needed'),
+('archived');
+
+select * from task_status;

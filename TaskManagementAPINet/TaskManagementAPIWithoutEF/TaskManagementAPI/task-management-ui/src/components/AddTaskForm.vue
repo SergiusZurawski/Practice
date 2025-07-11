@@ -6,12 +6,28 @@
         <label for="title">Title:</label>
         <input type="text" id="title" v-model="title" required />
       </div>
+
       <div class="form-group">
         <label for="description">Description:</label>
         <textarea id="description" v-model="description" required></textarea>
       </div>
-      <!-- You can add more fields here if your TaskItem model has them, e.g., dueDate -->
+
+      <div class="form-group">
+        <label for="task_due_date">Due Date:</label>
+        <input type="date" id="task_due_date" v-model="taskDueDate" />
+      </div>
+
+      <div class="form-group">
+        <label for="task_priority">Priority:</label>
+        <select id="task_priority" v-model.number="taskPriority">
+          <option value="1">High</option>
+          <option value="2">Medium</option>
+          <option value="3">Low</option>
+        </select>
+      </div>
+
       <button type="submit">Add Task</button>
+
       <div v-if="successMessage" class="success-message">{{ successMessage }}</div>
       <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
     </form>
@@ -19,37 +35,43 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import { useStore } from 'vuex';
 
 const store = useStore();
 
 const title = ref('');
 const description = ref('');
+const taskDueDate = ref('');
+const taskPriority = ref(null);
+
 const successMessage = ref('');
 const errorMessage = ref('');
 
-const handleSubmit = async () => {
-  if (!title.value || !description.value) {
-    errorMessage.value = 'Title and description are required.';
-    return;
-  }
+// ✅ Pull userId from store using getter
+const userId = computed(() => store.getters.getUserId);
 
+const handleSubmit = async () => {
   try {
+    console.log('handleSubmit userId' + userId.value);
     await store.dispatch('addTask', {
       title: title.value,
       description: description.value,
-      isCompleted: false, // Defaulting isCompleted to false for new tasks
+      taskDueDate: taskDueDate.value || null,
+      taskPriority: taskPriority.value,
+      userId: userId.value,
+      // ⚠️ No need to send taskStatusId — backend sets it
     });
+
     successMessage.value = 'Task added successfully!';
     errorMessage.value = '';
-    // Clear the form
+
     title.value = '';
     description.value = '';
-    // Optionally, hide success message after a few seconds
-    setTimeout(() => {
-      successMessage.value = '';
-    }, 3000);
+    taskDueDate.value = '';
+    taskPriority.value = null;
+
+    setTimeout(() => (successMessage.value = ''), 3000);
   } catch (error) {
     errorMessage.value = 'Failed to add task. ' + (error.message || '');
     successMessage.value = '';
@@ -57,6 +79,7 @@ const handleSubmit = async () => {
   }
 };
 </script>
+
 
 <style scoped>
 .add-task-form {
@@ -113,5 +136,3 @@ button[type="submit"]:hover {
   font-weight: bold;
 }
 </style>
-
-O3121

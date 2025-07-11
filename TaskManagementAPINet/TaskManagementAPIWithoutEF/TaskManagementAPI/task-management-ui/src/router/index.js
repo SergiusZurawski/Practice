@@ -3,6 +3,7 @@ import Home from '../views/Home.vue';
 import Tasks from '../views/Tasks.vue';
 import Login from '../views/Login.vue';
 import Register from '../views/Register.vue';
+import AddTask from '../views/AddTask.vue'
 
 const routes = [
   {
@@ -24,6 +25,11 @@ const routes = [
     path: '/register',
     name: 'Register',
     component: Register
+  },
+  {
+    path: '/addtask',
+    name: 'AddTask',
+    component: AddTask
   }
 ];
 

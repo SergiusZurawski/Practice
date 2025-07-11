@@ -104,9 +104,11 @@ const store = createStore({
       // For now, we'll assume if token exists, it's valid.
       // dispatch('fetchUserProfile'); // Example
       const payload = parseJwt(token);
-      if (payload && payload.nameid) {
-        console.log('User ID from token:', payload.nameid);
-        commit('setUserId', payload.nameid);
+      console.log('JWT token:', payload)
+      const userId = payload["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
+      if (payload && userId) {
+        console.log('User ID from token:', userId);
+        commit('setUserId', userId);
       }
       return true;
     },
